@@ -20,7 +20,7 @@
 function MultiThread () {
 
   // Implement a singleton design pattern for efficiency.
-  if (MultiThread.isntance != null) {
+  if (MultiThread.instance != null) {
     return MultiThread.instance;
   }
 
