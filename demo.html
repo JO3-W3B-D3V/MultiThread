@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JavaScript Multi Threading Demo</title>
+  </head>
+  <body>
+    <script src="Thread.js"></script>
+
+    <script id="loop1" type="javascript/worker">
+      self.onmessage = function(e) {
+        for (var i = 0; i < 100; i ++) {
+          console.log(i);
+        }
+      };
+  </script>
+
+  <script id="loop2" type="text/javascript">
+    self.onmessage = function(e) {
+      for (var i = 0; -100 < i; i --) {
+        console.log(i);
+      }
+    };
+  </script>
+  <script>
+    var $e = function (x) { return document.querySelector(x); };
+
+    var mt = new MultiThread();
+    var loop1 = $e("#loop1").textContent;
+    var loop2 = $e("#loop2").textContent;
+
+    // background thread 
+    mt.spawnThread({
+      code: loop1,
+      name: "First Loop"
+    }).postMessage(null);
+
+    // background thread
+    mt.spawnThread({
+      code: loop2,
+      name: "Second Loop"
+    }).postMessage(null);
+
+    // main thread
+    for (var i = 0; i < 10; i++) {
+      var x = i * 9 + 78;
+      console.log(x);
+    }
+
+    console.log(mt.getActiveThreads());
+  </script>
+  </body>
+</html>
