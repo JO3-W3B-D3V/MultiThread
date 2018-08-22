@@ -36,6 +36,7 @@ var threadSafety = setInterval(function() {
   if (complete.t1) {
     console.log("COMPLETE.");
     clearInterval(threadSafety);
+    mt.closeThread("First Loop");
   } else {
     console.log("Loading...");
   }
