@@ -4,49 +4,104 @@
     <title>JavaScript Multi Threading Demo</title>
   </head>
   <body>
+    <h1>Demo</h1>
+    <p>... Press F12 ...</p>
+
+
+    <!-- this is the main bulk of the code -->
     <script src="Thread.js"></script>
 
+
+    <!-- thread  #1 -->
     <script id="loop1" type="javascript/worker">
       self.onmessage = function(e) {
-        for (var i = 0; i < 100; i ++) {
-          console.log(i);
-        }
+        for (var i = 0; i < 100; i ++) { console.log(i); }
+        e.data.t1 = true;
+        self.postMessage(e.data.t1);
       };
-  </script>
+    </script>
 
-  <script id="loop2" type="text/javascript">
-    self.onmessage = function(e) {
-      for (var i = 0; -100 < i; i --) {
-        console.log(i);
-      }
-    };
-  </script>
-  <script>
-    var $e = function (x) { return document.querySelector(x); };
 
-    var mt = new MultiThread();
-    var loop1 = $e("#loop1").textContent;
-    var loop2 = $e("#loop2").textContent;
+    <!-- thread #2 -->
+    <script id="loop2" type="text/javascript">
+      self.onmessage = function(e) {
+        for (var i = 0; -100 < i; i --) { console.log(i); }
+        e.data.t2 = true;
+        self.postMessage(e.data.t2);
+      };
+    </script>
 
-    // background thread 
-    mt.spawnThread({
-      code: loop1,
-      name: "First Loop"
-    }).postMessage(null);
 
-    // background thread
-    mt.spawnThread({
-      code: loop2,
-      name: "Second Loop"
-    }).postMessage(null);
+    <!-- thread #3 -->
+    <script id="loop3" type="text/javascript">
+      self.onmessage = function(e) {
+        for (var i = 0; -100 < i; i --) { console.log("I like trains"); }
+        e.data.t3 = true;
+        self.postMessage(e.data.t3);
+      };
+    </script>
 
-    // main thread
-    for (var i = 0; i < 10; i++) {
-      var x = i * 9 + 78;
-      console.log(x);
-    }
 
-    console.log(mt.getActiveThreads());
-  </script>
+    <!-- thread #4 -->
+    <script id="loop4" type="text/javascript">
+      self.onmessage = function(e) {
+        for (var i = 0; -100 < i; i --) { console.log("I LOVE PIZZA"); }
+        e.data.t4 = true;
+        self.postMessage(e.data.t4);
+      };
+    </script>
+
+
+    <!-- main execution thread -->
+    <script>
+      console.time("threads");
+      var $e = function (x) { return document.querySelector(x); };
+      var mt = new MultiThread();
+      var loop1 = $e("#loop1").textContent;
+      var loop2 = $e("#loop2").textContent;
+      var loop3 = $e("#loop3").textContent;
+      var loop4 = $e("#loop4").textContent;
+      var complete = { t1: false, t2: false, t3: false, t4: false };
+
+
+      // background thread # 1
+      var t1 = mt.spawnThread({ code: loop1, name: "First Loop" });
+      t1.postMessage(complete);
+      t1.onmessage = function (e) { complete.t1 = e.data; };
+
+
+      // background thread # 2
+      var t2 = mt.spawnThread({ code: loop2, name: "Second Loop" });
+      t2.postMessage(complete);
+      t2.onmessage = function (e) { complete.t2 = e.data };
+
+
+      // background thread # 3
+      var t3 = mt.spawnThread({ code: loop3, name: "I Like Trains" });
+      t3.postMessage(complete);
+      t3.onmessage = function (e) { complete.t3 = e.data };
+
+
+      // background thread # 4
+      var t4 = mt.spawnThread({ code: loop4, name: "PIZZZZAAAAAAA!!!!!!!!" });
+      t4.postMessage(complete);
+      t4.onmessage = function (e) { complete.t4 = e.data };
+
+
+      // this is just some code that runs on the main thread
+      // console.log(mt.getActiveThreads());
+
+
+      // now just to wait for the threads to finish...
+      var threadSafety = setInterval(function(){
+        if (complete.t1 && complete.t2 && complete.t3 && complete.t4) {
+          clearInterval(threadSafety);
+          console.log("COMPLETE.");
+          console.timeEnd("threads");
+        } else {
+          console.log("Loading...");
+        }
+      }, 0);
+    </script>
   </body>
 </html>
