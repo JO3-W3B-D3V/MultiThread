@@ -4,6 +4,8 @@ The purpose of this project is simple, include a lightweight wrapper on top of w
 ## Why use it? 
 It may sound silly, but it just helps you cut corners, more so if you're not looking to include a silly number of external JavaScript files. With this implantation it will allow you to execute scripts which can be found within the HTML file inside of some script tag, you can refer to the demo if you'd like to see how that works.
 
+If you take a look at the second demo html file, you can see that there's very little going on with the main thread, however there's more interesting things going on with the background thread. I think this may be a better example as to when you could use multiple threads in JavaScript within the web browser, it makes sense considering you _may_ want to render certain elements in parallel. 
+
 ## How to use it? - Thread.js
 This implementation works in a very similar way, it's pretty much just an alternative approach, this way does not rely on any mark up language like MultiThread.js does, also each thread is managed by itself, you can ```terminate``` each thread as you like rather than like the demo with the alternative version.
 
