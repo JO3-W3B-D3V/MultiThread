@@ -4,7 +4,44 @@ The purpose of this project is simple, include a lightweight wrapper on top of w
 ## Why use it? 
 It may sound silly, but it just helps you cut corners, more so if you're not looking to include a silly number of external JavaScript files. With this implantation it will allow you to execute scripts which can be found within the HTML file inside of some script tag, you can refer to the demo if you'd like to see how that works.
 
-## How to use it?
+## How to use it? - Thread.js
+This implementation works in a very similar way, it's pretty much just an alternative approach, this way does not rely on any mark up language like MultiThread.js does, also each thread is managed by itself, you can ```terminate``` each thread as you like rather than like the demo with the alternative version.
+
+So let's start, all you really need to do is the following: 
+```javascript
+// create some dummy data object
+var data = {name : "Joe"};
+
+// create a thread
+var t = new Thread()
+
+  // give it a name if you like, it makes no difference to how it operates
+  .setName("test")
+
+  // set the data that it will handle
+  .setData(data)
+
+  // what exactly should this thread do?
+  .setCode(function (e) {
+    e.data.lastName = "Evans";
+  })
+
+  // what would you like to do once the thread has finished?
+  .setOnComplete(function(e) {
+    data = e.data;
+    console.log(data);
+    console.log(t.getThread());
+    t.kill();
+    console.log(t.getThread());
+    console.log("COMPLETE!");
+  })
+
+  // start the thread
+  .start();
+```
+
+
+## How to use it? - MultiThread.js
 So, as I stated, you can store some of your JavaScript into a script tag, like so: 
 ```html
 <!-- thread  #1 -->
