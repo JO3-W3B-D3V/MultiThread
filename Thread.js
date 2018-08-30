@@ -62,6 +62,10 @@ function Thread () {
     setOnComplete : function (complete) {
       oncomplete = complete;
       return publicObject;
+    }, 
+    
+    onComplete : function (complete) {
+      return publicObject.setOnComplete(complete);
     },
 
     setData : function (d) {
