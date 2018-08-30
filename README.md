@@ -29,7 +29,7 @@ var t = new Thread()
   })
 
   // what would you like to do once the thread has finished?
-  .setOnComplete(function(e) {
+  .setOnComplete(function(e) { // OR: .onComplete (function(e) { ...
     data = e.data;
     console.log(data);
     console.log(t.getThread());
