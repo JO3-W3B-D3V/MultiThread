@@ -11,13 +11,15 @@
  * @todo      Test how well the code below works with jQuery.
  */
 !function () {
-  $ = jQuery || $;
+  $ = jQuery || $ || {};
 
   if ($ == null) {
     throw new Error("jQuery is not defined.");
   } else if ($.fn == null) {
     throw new Error("The prototype property isn't available.");
   }
+
+ $.fn = $.fn || {};
 
 
   $.fn.Thread = function () {
