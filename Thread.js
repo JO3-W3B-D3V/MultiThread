@@ -86,7 +86,7 @@ function Thread () {
 
     kill : function () {
       try {
-        thread.terminate;
+        thread.terminate();
         thread = null;
       } catch (Exception) {
         /* no need to worry about it */
